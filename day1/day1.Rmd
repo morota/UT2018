@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Quantitative Genetics"
-subtitle: "Statistical Methods for Omics-assisted Breeding Hands-on workshop"
+subtitle: "Statistical Methods for Omics-assisted Breeding Hands-on Workshop"
 author: "Gota Morota <br />[http://morotalab.org/](http://morotalab.org/) <br />"
 date: "2018/11/12"
 output:
@@ -223,7 +223,7 @@ where $n$ is the number of individuals (e.g., accessions) and $m$ is the number 
 
 .center[Image data]
 
-
+[Phenotype is king!]()
 
 
 
@@ -300,6 +300,21 @@ Big data are being generated in almost every field
 
 - $m$ number of SNPs (genetic markers)
 
+
+
+---
+# Why we use big data in genetics? ([Makowsky et al., 2011](https://doi.org/10.1371/journal.pgen.1002051))
+"<img src="makowsky1.png" width=700 height=400>
+
+
+
+---
+# Why we use big data in genetics? ([Erbe et al., 2013](https://doi.org/10.1371/journal.pone.0081046))
+"<img src="Erbe.png" width=700 height=400>
+
+
+
+
 ---
 # How to parameterize  response variable y?
 
@@ -345,9 +360,38 @@ Combination of above two (e.g., estimate proportion of additive genetic variance
 
 
 
+---
+# Expectation and variance (1)
+Define the random variable $w$ which takes the value 1 if in gametes, $A$ is present at locus $A$ and zero otherwise.
+\begin{align*}
+  w &=
+  \begin{cases}
+    1 & \text{if gamete carries } A \text{ with frequency } p\\
+    0 & \text{otherwise, i.e., } a \text{ with frequency } 1-p
+  \end{cases} \\
+\end{align*}
+where $p$ is the allele frequency of $A$. 
+
+--
+
+Then,
+\begin{align*}
+E(x) &= p \times 1 + (1-p) \times 0 \\
+&= p \\
+E(x^2) &= p \times 1^2 + (1-p) \times 0^2 \\
+&= p
+\end{align*}
+Thus, the variance of allelic content is 
+\begin{align*}
+Var(x) &= E(x^2) - E(x)^2 \\
+&= p - p^2 \\
+&= p(1-p) \\
+\end{align*}
+
+
 
 ---
-# Expectation and variance 
+# Expectation and variance (2)
 Define the random variable $W$ which counts the number of reference allele $A$.
 \begin{align*}
   W &=
@@ -436,6 +480,41 @@ Therefore, the variance and the centered codes are the same.
 
 
 
+
+
+---
+# Covariance
+
+\begin{align*}
+    w_{A} &=
+  \begin{cases}
+    1 & \text{if gamete carries } A  \text{ with frequency } p_A\\
+    0 & \text{otherwise, i.e., } a  \text{ with frequency } 1-p_A
+  \end{cases} \\
+  w_{B} &=
+  \begin{cases}
+    1 & \text{if gamete carries } B  \text{ with frequency } p_B\\
+    0 & \text{otherwise, i.e., } b  \text{ with frequency } 1-p_B
+  \end{cases}
+\end{align*}
+
+--
+
+\begin{align*}
+  E(w_A) &= p_A \\
+  Var(w_A) &= pA(1-p_A) \\
+  E(x_B) &= p_B \\
+  Var(x_B) &= pB(1-p_B) \\
+  E(x_A x_B) &= p_{AB} \\
+  Cov(x_A, x_B) &= D_{AB} = p_{AB} - p_{A}p_{B}
+\end{align*}
+
+--
+The quantity $D_{AB}$ is defined to be the (gametic) linkage disequilibrium between alleles $A$ and $B$.
+\begin{align*}
+\rho_{AB} = cor(x_{A}, x_{B}) &=  \frac{D_{AB}}{\sqrt{p_A(1-p_A)p_B(1-p_B)}} \\
+r^2_{AB} &= \frac{D^2_{AB}}{p_A(1-p_A)p_B(1-p_B)}
+\end{align*}
 
 
 ---
@@ -544,5 +623,7 @@ The expectation of $\hat{a}_1$ is
 - the same applies when there are more than two SNPs 
 
 
-
+---
+# Bibliography
+![](biblio.png)
 

@@ -12,7 +12,7 @@
 class: center, middle, inverse, title-slide
 
 # Introduction to Quantitative Genetics
-## Statistical Methods for Omics-assisted Breeding Hands-on workshop
+## Statistical Methods for Omics-assisted Breeding Hands-on Workshop
 ### Gota Morota <br /><a href="http://morotalab.org/" class="uri">http://morotalab.org/</a> <br />
 ### 2018/11/12
 
@@ -229,7 +229,7 @@ where `\(n\)` is the number of individuals (e.g., accessions) and `\(m\)` is the
 
 .center[Image data]
 
-
+[Phenotype is king!]()
 
 
 
@@ -306,6 +306,21 @@ Big data are being generated in almost every field
 
 - `\(m\)` number of SNPs (genetic markers)
 
+
+
+---
+# Why we use big data in genetics? ([Makowsky et al., 2011](https://doi.org/10.1371/journal.pgen.1002051))
+"&lt;img src="makowsky1.png" width=700 height=400&gt;
+
+
+
+---
+# Why we use big data in genetics? ([Erbe et al., 2013](https://doi.org/10.1371/journal.pone.0081046))
+"&lt;img src="Erbe.png" width=700 height=400&gt;
+
+
+
+
 ---
 # How to parameterize  response variable y?
 
@@ -351,9 +366,38 @@ Combination of above two (e.g., estimate proportion of additive genetic variance
 
 
 
+---
+# Expectation and variance (1)
+Define the random variable `\(w\)` which takes the value 1 if in gametes, `\(A\)` is present at locus `\(A\)` and zero otherwise.
+`\begin{align*}
+  w &amp;=
+  \begin{cases}
+    1 &amp; \text{if gamete carries } A \text{ with frequency } p\\
+    0 &amp; \text{otherwise, i.e., } a \text{ with frequency } 1-p
+  \end{cases} \\
+\end{align*}`
+where `\(p\)` is the allele frequency of `\(A\)`. 
+
+--
+
+Then,
+`\begin{align*}
+E(x) &amp;= p \times 1 + (1-p) \times 0 \\
+&amp;= p \\
+E(x^2) &amp;= p \times 1^2 + (1-p) \times 0^2 \\
+&amp;= p
+\end{align*}`
+Thus, the variance of allelic content is 
+`\begin{align*}
+Var(x) &amp;= E(x^2) - E(x)^2 \\
+&amp;= p - p^2 \\
+&amp;= p(1-p) \\
+\end{align*}`
+
+
 
 ---
-# Expectation and variance 
+# Expectation and variance (2)
 Define the random variable `\(W\)` which counts the number of reference allele `\(A\)`.
 `\begin{align*}
   W &amp;=
@@ -442,6 +486,41 @@ Therefore, the variance and the centered codes are the same.
 
 
 
+
+
+---
+# Covariance
+
+`\begin{align*}
+    w_{A} &amp;=
+  \begin{cases}
+    1 &amp; \text{if gamete carries } A  \text{ with frequency } p_A\\
+    0 &amp; \text{otherwise, i.e., } a  \text{ with frequency } 1-p_A
+  \end{cases} \\
+  w_{B} &amp;=
+  \begin{cases}
+    1 &amp; \text{if gamete carries } B  \text{ with frequency } p_B\\
+    0 &amp; \text{otherwise, i.e., } b  \text{ with frequency } 1-p_B
+  \end{cases}
+\end{align*}`
+
+--
+
+`\begin{align*}
+  E(w_A) &amp;= p_A \\
+  Var(w_A) &amp;= pA(1-p_A) \\
+  E(x_B) &amp;= p_B \\
+  Var(x_B) &amp;= pB(1-p_B) \\
+  E(x_A x_B) &amp;= p_{AB} \\
+  Cov(x_A, x_B) &amp;= D_{AB} = p_{AB} - p_{A}p_{B}
+\end{align*}`
+
+--
+The quantity `\(D_{AB}\)` is defined to be the (gametic) linkage disequilibrium between alleles `\(A\)` and `\(B\)`.
+`\begin{align*}
+\rho_{AB} = cor(x_{A}, x_{B}) &amp;=  \frac{D_{AB}}{\sqrt{p_A(1-p_A)p_B(1-p_B)}} \\
+r^2_{AB} &amp;= \frac{D^2_{AB}}{p_A(1-p_A)p_B(1-p_B)}
+\end{align*}`
 
 
 ---
@@ -547,7 +626,12 @@ The expectation of `\(\hat{a}_1\)` is
 
 - OLS is biased if full model holds but fit a misspecified model
 - this bias is proportional to `\((\mathbf{w'_1w_1})^{-1}\mathbf{w'_1w_2}a_2\)`
-- the same applies when there are more than two SNPs
+- the same applies when there are more than two SNPs 
+
+
+---
+# Bibliography
+![](biblio.png)
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
