@@ -502,11 +502,11 @@ Therefore, the variance and the centered codes are the same.
 
 \begin{align*}
   E(w_A) &= p_A \\
-  Var(w_A) &= pA(1-p_A) \\
-  E(x_B) &= p_B \\
-  Var(x_B) &= pB(1-p_B) \\
-  E(x_A x_B) &= p_{AB} \\
-  Cov(x_A, x_B) &= D_{AB} = p_{AB} - p_{A}p_{B}
+  Var(w_A) &= p_A(1-p_A) \\
+  E(w_B) &= p_B \\
+  Var(w_B) &= p_B(1-p_B) \\
+  E(w_A w_B) &= p_{AB} \\
+  Cov(w_A, w_B) &= D_{AB} = p_{AB} - p_{A}p_{B}
 \end{align*}
 
 --
