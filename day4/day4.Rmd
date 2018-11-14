@@ -762,4 +762,21 @@ Individuals within traits
 ![](uni10.png)
 
 
+---
+# Is multi-trait model useful?
+
+GBLUP model
+
+- estimate covariance structures $\rightarrow$ genetic correlations
+
+- traits with scarce records 
+
+- traits with low heritability
+
+RR-BLUP
+
+- increase statistical power to detect QTL regions 
+
+
+
 
