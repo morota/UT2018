@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Gota Morota" />
+
+<meta name="date" content="2018-11-15" />
+
+<title>Multi-trait GWAS</title>
+
+<script src="lab4_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="lab4_files/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+<script src="lab4_files/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+<script src="lab4_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="lab4_files/navigation-1.1/tabsets.js"></script>
+<script src="lab4_files/navigation-1.1/codefolding.js"></script>
+<link href="lab4_files/magnific-popup-1.1.0/magnific-popup.css" rel="stylesheet" />
+<script src="lab4_files/magnific-popup-1.1.0/jquery.magnific-popup.min.js"></script>
+<link href="lab4_files/readthedown-0.1/readthedown.css" rel="stylesheet" />
+<script src="lab4_files/readthedown-0.1/readthedown.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #ffffff; color: #1f1c1b; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; background-color: #ffffff; color: #a0a0a0; border-right: 1px solid #a0a0a0; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #1f1c1b; background-color: #ffffff; }
+code > span.kw { color: #1f1c1b; font-weight: bold; } /* Keyword */
+code > span.dt { color: #0057ae; } /* DataType */
+code > span.dv { color: #b08000; } /* DecVal */
+code > span.bn { color: #b08000; } /* BaseN */
+code > span.fl { color: #b08000; } /* Float */
+code > span.cn { color: #aa5500; } /* Constant */
+code > span.ch { color: #924c9d; } /* Char */
+code > span.sc { color: #3daee9; } /* SpecialChar */
+code > span.st { color: #bf0303; } /* String */
+code > span.vs { color: #bf0303; } /* VerbatimString */
+code > span.ss { color: #ff5500; } /* SpecialString */
+code > span.im { color: #ff5500; } /* Import */
+code > span.co { color: #898887; } /* Comment */
+code > span.do { color: #607880; } /* Documentation */
+code > span.an { color: #ca60ca; } /* Annotation */
+code > span.cv { color: #0095ff; } /* CommentVar */
+code > span.ot { color: #006e28; } /* Other */
+code > span.fu { color: #644a9b; } /* Function */
+code > span.va { color: #0057ae; } /* Variable */
+code > span.cf { color: #1f1c1b; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #1f1c1b; } /* Operator */
+code > span.bu { color: #644a9b; font-weight: bold; } /* BuiltIn */
+code > span.ex { color: #0095ff; font-weight: bold; } /* Extension */
+code > span.pp { color: #006e28; } /* Preprocessor */
+code > span.at { color: #0057ae; } /* Attribute */
+code > span.re { color: #0057ae; } /* RegionMarker */
+code > span.in { color: #b08000; } /* Information */
+code > span.wa { color: #bf0303; } /* Warning */
+code > span.al { color: #bf0303; font-weight: bold; } /* Alert */
+code > span.er { color: #bf0303; text-decoration: underline; } /* Error */
+code > span. { color: #1f1c1b; } /* Normal */
+</style>
+
+
+</head>
+
+<body>
+
+
+<div id="content" data-toggle="wy-nav-shift">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<nav id="nav-top" role="navigation" aria-label="top navigation">
+    <a role="button" href="#" data-toggle="wy-nav-top"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+</nav>
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="text-muted">Code</span> <span class="text-muted caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All</a></li>
+</ul>
+</div>
+
+<div id="header">
+<h1 class="title">Multi-trait GWAS</h1>
+<h1 class="subtitle">Statistical Methods for Omics-assisted Breeding Hands-on Workshop</h1>
+</div>
+
+
+<div id="table-of-contents">
+    <h2><a href="#content">Multi-trait GWAS</a></h2>
+    <div id="text-table-of-contents">
+      
+    </div>
+</div>
+
+<div id="main">
+<div id="fitting-a-bivariate-gblup-model-using-the-mtm-package" class="section level3">
+<h3>Fitting a bivariate GBLUP model using the MTM package</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
+
+<span class="kw">library</span>(MTM)
+<span class="kw">library</span>(BGLR)
+<span class="kw">library</span>(ggplot2)
+
+<span class="kw">data</span>(wheat)
+Y &lt;-<span class="st"> </span>wheat.Y[, <span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]
+W &lt;-<span class="st"> </span><span class="kw">scale</span>(wheat.X, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="ot">TRUE</span>)
+G &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(W)<span class="op">/</span><span class="kw">ncol</span>(W)
+
+
+fm &lt;-<span class="st"> </span><span class="kw">MTM</span>(<span class="dt">Y =</span> Y, <span class="dt">K =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">K =</span> G, <span class="dt">COV =</span> <span class="kw">list</span>(<span class="dt">type =</span> <span class="st">&quot;UN&quot;</span>, <span class="dt">df0 =</span> <span class="dv">4</span>, <span class="dt">S0 =</span> <span class="kw">diag</span>(<span class="dv">2</span>)))), 
+    <span class="dt">resCov =</span> <span class="kw">list</span>(<span class="dt">type =</span> <span class="st">&quot;UN&quot;</span>, <span class="dt">S0 =</span> <span class="kw">diag</span>(<span class="dv">2</span>), <span class="dt">df0 =</span> <span class="dv">4</span>), <span class="dt">nIter =</span> <span class="dv">500</span>, <span class="dt">burnIn =</span> <span class="dv">200</span>, 
+    <span class="dt">thin =</span> <span class="dv">5</span>, <span class="dt">saveAt =</span> <span class="st">&quot;ex2_&quot;</span>)</code></pre></div>
+</div>
+<div id="backsolving-for-marker-effects" class="section level3">
+<h3>Backsolving for marker effects</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a1 &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">t</span>(W) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(W <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(W)) <span class="op">%*%</span><span class="st"> </span>fm<span class="op">$</span>K[[<span class="dv">1</span>]]<span class="op">$</span>U[, <span class="dv">1</span>])
+a2 &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">t</span>(W) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>(W <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(W)) <span class="op">%*%</span><span class="st"> </span>fm<span class="op">$</span>K[[<span class="dv">1</span>]]<span class="op">$</span>U[, <span class="dv">2</span>])
+
+dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Marker =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(W), <span class="dt">Effect =</span> <span class="kw">c</span>(a1, a2), <span class="dt">Trait =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;Trait1&quot;</span>, 
+    <span class="kw">ncol</span>(W)), <span class="kw">rep</span>(<span class="st">&quot;Trait2&quot;</span>, <span class="kw">ncol</span>(W))))
+<span class="kw">ggplot</span>(dat, <span class="kw">aes</span>(Marker, Effect, <span class="dt">colour =</span> Trait)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="lab4_files/figure-html/unnamed-chunk-2-1.png" width="768" /></p>
+</div>
+<div id="fitting-a-bivariate-single-marker-regression-gwas-model-using-the-mtm-package" class="section level3">
+<h3>Fitting a bivariate single marker regression GWAS model using the MTM package</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
+
+<span class="kw">library</span>(MTM)
+<span class="kw">library</span>(BGLR)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">data</span>(wheat)
+
+Y &lt;-<span class="st"> </span>wheat.Y[, <span class="dv">3</span><span class="op">:</span><span class="dv">4</span>]
+W &lt;-<span class="st"> </span><span class="kw">scale</span>(wheat.X, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="ot">TRUE</span>)
+G &lt;-<span class="st"> </span><span class="kw">tcrossprod</span>(W)<span class="op">/</span><span class="kw">ncol</span>(W)
+
+Z &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="dv">599</span>), <span class="dt">ncol =</span> <span class="dv">2</span>)
+B &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="op">-</span><span class="dv">2</span>), <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">2</span>))
+<span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {
+    Y[, i] &lt;-<span class="st"> </span>Y[, i] <span class="op">+</span><span class="st"> </span>Z <span class="op">%*%</span><span class="st"> </span>B[, i]
+}
+
+sub.X &lt;-<span class="st"> </span>wheat.X[, <span class="dv">1</span><span class="op">:</span><span class="dv">50</span>]
+
+m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow =</span> <span class="kw">ncol</span>(sub.X), <span class="dt">ncol =</span> <span class="dv">2</span>)
+
+<span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(sub.X)) {
+    fm &lt;-<span class="st"> </span><span class="kw">MTM</span>(<span class="dt">Y =</span> Y, <span class="dt">XF =</span> <span class="kw">cbind</span>(Z, sub.X[, j]), <span class="dt">K =</span> <span class="kw">list</span>(<span class="kw">list</span>(<span class="dt">K =</span> G, <span class="dt">COV =</span> <span class="kw">list</span>(<span class="dt">type =</span> <span class="st">&quot;UN&quot;</span>, 
+        <span class="dt">df0 =</span> <span class="dv">4</span>, <span class="dt">S0 =</span> <span class="kw">diag</span>(<span class="dv">2</span>)))), <span class="dt">resCov =</span> <span class="kw">list</span>(<span class="dt">type =</span> <span class="st">&quot;UN&quot;</span>, <span class="dt">S0 =</span> <span class="kw">diag</span>(<span class="dv">2</span>), <span class="dt">df0 =</span> <span class="dv">4</span>), 
+        <span class="dt">nIter =</span> <span class="dv">50</span>, <span class="dt">burnIn =</span> <span class="dv">20</span>, <span class="dt">thin =</span> <span class="dv">5</span>, <span class="dt">saveAt =</span> <span class="st">&quot;ex2_&quot;</span>)
+    m[j, <span class="dv">1</span>] &lt;-<span class="st"> </span>fm<span class="op">$</span>B.f[<span class="dv">3</span>, <span class="dv">1</span>]
+    m[j, <span class="dv">2</span>] &lt;-<span class="st"> </span>fm<span class="op">$</span>B.f[<span class="dv">3</span>, <span class="dv">2</span>]
+}</code></pre></div>
+</div>
+<div id="visualization" class="section level3">
+<h3>Visualization</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Marker =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">ncol</span>(sub.X), <span class="dt">Effect =</span> <span class="kw">c</span>(m[, <span class="dv">1</span>], m[, <span class="dv">2</span>]), <span class="dt">Trait =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;Trait1&quot;</span>, 
+    <span class="kw">ncol</span>(sub.X)), <span class="kw">rep</span>(<span class="st">&quot;Trait2&quot;</span>, <span class="kw">ncol</span>(sub.X))))
+<span class="kw">ggplot</span>(dat, <span class="kw">aes</span>(Marker, Effect, <span class="dt">colour =</span> Trait)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="lab4_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
+</div>
+</div>
+
+
+</div>
+
+<div id="postamble" data-toggle="wy-nav-shift" class="status">
+<p class="author"><span class="glyphicon glyphicon-user"></span> Gota Morota</p>
+<p class="date"><span class="glyphicon glyphicon-calendar"></span> November 15, 2018</p>
+</div>
+
+
+<script>
+$(document).ready(function () {
+ 	  });
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
